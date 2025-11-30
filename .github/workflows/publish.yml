@@ -48,6 +48,7 @@ jobs:
               "@semantic-release/release-notes-generator",
               "@semantic-release/github",
               ["@semantic-release/npm", {
+                "npmPublish": true,
                 "verifyConditions": false
               }],
               "@semantic-release/git"
@@ -58,8 +59,8 @@ jobs:
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v4
         with:
-          # Ya no definimos plugins aquí, usará el .releaserc.json creado arriba
-          semantic_version: 19 # Aseguramos una versión estable
+          # 💥 CORRECCIÓN: Usamos la versión 24 (moderna) que soporta OIDC
+          semantic_version: 24
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # 🟢 ELIMINADO: NPM_TOKEN
