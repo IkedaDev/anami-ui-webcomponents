@@ -16,5 +16,9 @@
     "design-system",
     "anami-ui"
   ],
-  "author": "IkedaDev"
+  "author": "IkedaDev",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
 }

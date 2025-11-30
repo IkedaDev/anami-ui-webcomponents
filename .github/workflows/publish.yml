@@ -11,11 +11,11 @@ jobs:
     name: Publicar Librería
     runs-on: ubuntu-latest
 
-    # 💥 CORRECCIÓN CRUCIAL PARA TRUSTED PUBLISHERS
+    # 💥 PERMISOS PARA TRUSTED PUBLISHERS (OIDC)
     permissions:
-      contents: write # Para que semantic-release pueda commitear y taggear
+      contents: write # Para commitear cambios (package.json, changelog)
       issues: write # Para comentar en issues/PRs
-      id-token: write # OBLIGATORIO: Permite la autenticación OIDC con NPM
+      id-token: write # OBLIGATORIO: Permite la autenticación segura con NPM sin tokens
 
     steps:
       # 1. Checkout del código
@@ -24,7 +24,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 2. Configurar Node.js y el registro NPM
+      # 2. Configurar Node.js
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
@@ -56,5 +56,6 @@ jobs:
             @semantic-release/npm
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # NOTA: Con Trusted Publishers, NO necesitamos NPM_TOKEN aquí.
-          # La autenticación se maneja automáticamente gracias a 'id-token: write'.
+          # 🟢 ELIMINADO: NPM_TOKEN.
+          # Con Trusted Publishers configurado en npmjs.com y 'id-token: write' arriba,
+          # la autenticación es automática. No se necesita secreto.
