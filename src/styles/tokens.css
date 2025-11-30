@@ -1,0 +1,30 @@
+:root {
+  /* --- Paleta de Colores --- */
+  --anami-text-main: #4a403a; /* Gris cálido oscuro (Texto principal) */
+  --anami-text-light: #8c817c; /* Gris rosado (Texto secundario/descripciones) */
+
+  --anami-bg-body: #fffcfa; /* Crema muy pálido (Fondo general) */
+  --anami-bg-surface: #ffffff; /* Blanco (Tarjetas/Superficies) */
+
+  --anami-brand-primary: #c47f6b; /* Terracota (Acciones, Títulos destacados) */
+  --anami-brand-secondary: #e8d3cd; /* Beige rosado (Bordes, Fondos sutiles) */
+  --anami-brand-blob: #f9ebe7; /* Rosado muy suave (Fondo de iconos, formas orgánicas) */
+
+  --anami-success: #25d366; /* WhatsApp Green */
+
+  /* --- Tipografía --- */
+  --anami-font-main: "Outfit", sans-serif;
+
+  /* --- Espaciado y Bordes --- */
+  --anami-radius-sm: 8px;
+  --anami-radius-md: 12px;
+  --anami-radius-lg: 24px;
+  --anami-radius-pill: 50px;
+
+  /* --- Sombras (Elevation) --- */
+  --anami-shadow-soft: 0 10px 40px -10px rgba(74, 64, 58, 0.08);
+  --anami-shadow-hover: 0 20px 40px -5px rgba(196, 127, 107, 0.15);
+
+  /* --- Transiciones --- */
+  --anami-transition: all 0.3s ease;
+}

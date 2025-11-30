@@ -1,0 +1,227 @@
+/* =========================================
+   2. RESET BÁSICO & BASE
+   ========================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--anami-font-main);
+  background-color: var(--anami-bg-body);
+  color: var(--anami-text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  font-weight: 300; /* Estilo 'Light' por defecto de la marca */
+  color: var(--anami-text-main);
+}
+
+p {
+  margin-top: 0;
+  color: var(--anami-text-light);
+  font-weight: 300;
+}
+
+/* =========================================
+   3. UTILIDADES DE TIPOGRAFÍA
+   ========================================= */
+.text-display {
+  font-size: 3.5rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.text-h1 {
+  font-size: 2.8rem;
+  font-weight: 300;
+}
+
+.text-h2 {
+  font-size: 2rem;
+  font-weight: 300;
+}
+
+.text-h3 {
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.text-subtitle {
+  display: block;
+  color: var(--anami-brand-primary);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.text-body {
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.text-center {
+  text-align: center;
+}
+.text-primary {
+  color: var(--anami-brand-primary);
+}
+.text-light {
+  color: var(--anami-text-light);
+}
+
+/* =========================================
+   4. COMPONENTES UI
+   ========================================= */
+
+/* --- Botones --- */
+.btn {
+  display: inline-block;
+  padding: 12px 32px;
+  background-color: var(--anami-brand-primary);
+  color: white;
+  text-decoration: none;
+  border-radius: var(--anami-radius-pill);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  font-size: 0.95rem;
+  transition: var(--anami-transition);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(196, 127, 107, 0.2);
+}
+
+.btn:hover {
+  background-color: #a66654; /* Un tono más oscuro */
+  transform: translateY(-2px);
+  box-shadow: var(--anami-shadow-hover);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--anami-brand-primary);
+  color: var(--anami-brand-primary);
+  box-shadow: none;
+}
+
+.btn-outline:hover {
+  background: var(--anami-brand-primary);
+  color: white;
+}
+
+/* --- Tarjetas (Cards) --- */
+.card-base {
+  background: var(--anami-bg-surface);
+  border-radius: var(--anami-radius-lg);
+  padding: 2rem;
+  box-shadow: var(--anami-shadow-soft);
+  border: 1px solid var(--anami-brand-secondary);
+  transition: var(--anami-transition);
+}
+
+.card-base:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--anami-shadow-hover);
+}
+
+/* --- Contenedor de Iconos (Círculo con SVG) --- */
+.icon-box {
+  width: 64px;
+  height: 64px;
+  background-color: var(--anami-brand-blob);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--anami-brand-primary);
+  margin-bottom: 1rem;
+  box-shadow: var(--anami-shadow-soft);
+}
+
+.icon-box svg {
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* --- Badges / Etiquetas --- */
+.badge {
+  display: inline-block;
+  font-size: 0.9rem;
+  color: var(--anami-text-light);
+  background: var(--anami-brand-secondary);
+  padding: 4px 12px;
+  border-radius: var(--anami-radius-pill);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* =========================================
+   5. LAYOUT & UTILIDADES
+   ========================================= */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.section-padding {
+  padding: 6rem 0;
+}
+
+.grid-responsive {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 3rem;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* =========================================
+   6. RESPONSIVIDAD (Media Queries)
+   ========================================= */
+@media (max-width: 768px) {
+  .text-display {
+    font-size: 2.5rem;
+  }
+  .text-h1 {
+    font-size: 2rem;
+  }
+  .section-padding {
+    padding: 4rem 0;
+  }
+
+  .container {
+    padding: 0 1.5rem;
+  }
+}

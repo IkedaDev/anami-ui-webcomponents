@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Demo Anami UI</title>
+    <!-- Importamos la fuente -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- 1. Importamos los ESTILOS manualmente aquí -->
+    <link rel="stylesheet" href="./src/styles/tokens.css" />
+
+    <!-- 2. Importamos el JS como módulo -->
+    <script type="module" src="./index.js"></script>
+
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: var(--anami-font-main);
+        background-color: var(--anami-bg-body);
+        color: var(--anami-text-main);
+        line-height: 1.6;
+      }
+
+      .library-preview {
+        padding: 40px;
+        max-width: 1400px; /* Más ancho para que respire */
+        margin: 0 auto;
+      }
+
+      .component-label {
+        display: block;
+        margin-top: 80px;
+        margin-bottom: 20px;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #c0b8b5;
+        text-align: center;
+        position: relative;
+      }
+      .component-label::after {
+        content: "";
+        display: block;
+        width: 40px;
+        height: 1px;
+        background: #e0e0e0;
+        margin: 10px auto 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <div class="library-preview"> -->
+    <div class="component-label">Navegación</div>
+    <anami-navbar
+      logo="Anami Masoterapia"
+      links='[{"text": "Inicio", "href": "#"}, {"text": "Servicios", "href": "#servicios"}, {"text": "Hotel", "href": "#hotel"}, {"text": "Contacto", "href": "#contacto"}]'
+    ></anami-navbar>
+
+    <div class="component-label">Hero Section (Estilo Editorial)</div>
+    <anami-hero
+      id="inicio"
+      title="Bienestar y equilibrio"
+      subtitle="Masoterapia profesional en Temuco. Un espacio diseñado para reconectar con tu cuerpo."
+      image-url="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+    ></anami-hero>
+
+    <div class="component-label">Bio Section (Orgánico)</div>
+    <anami-bio
+      name="Hola, soy Anette"
+      subtitle="Masoterapeuta Certificada"
+      description="El masaje no es solo una técnica, es una forma de comunicación silenciosa. Con 3 años de experiencia, me dedico a crear espacios de pausa en un mundo acelerado, especializándome en aliviar la tensión crónica y restaurar la vitalidad."
+      image-url="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    ></anami-bio>
+
+    <div class="component-label">Call to Action (Minimalista)</div>
+    <anami-cta-card
+      id="reserva-wsp"
+      title="Reserva tu momento"
+      text="Tu cuerpo es tu hogar. Agenda una sesión personalizada y descubre los beneficios de la masoterapia profesional."
+      button-text="Agendar Visita"
+      image-url="https://images.unsplash.com/photo-1519823551278-64ac92734fb1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+    ></anami-cta-card>
+
+    <script type="module">
+      document
+        .getElementById("reserva-wsp")
+        .addEventListener("cta-card-click", () => {
+          console.log("click");
+        });
+    </script>
+
+    <script type="module">
+      // 1. Definir los datos de prueba
+      const servicesData = [
+        {
+          name: "Masaje Descontracturante",
+          duration: "60 min",
+          description:
+            "Enfoque en liberar la tensión muscular profunda en cuello, espalda y hombros. Ideal para estrés o post-ejercicio.",
+          price: "$35.000 CLP",
+        },
+        {
+          name: "Masaje de Relajación",
+          duration: "90 min",
+          description:
+            "Técnicas suaves y fluidas para promover la calma general del cuerpo y la mente. Incluye aromaterapia.",
+          price: "$45.000 CLP",
+        },
+        {
+          name: "Masaje Deportivo",
+          duration: "45 min",
+          description:
+            "Masaje focalizado en áreas específicas para mejorar el rendimiento, prevenir lesiones y acelerar la recuperación.",
+          price: "$30.000 CLP",
+        },
+        {
+          name: "Piedras Calientes",
+          duration: "75 min",
+          description:
+            "Uso de piedras volcánicas calientes para relajar músculos y mejorar la circulación. Una experiencia premium.",
+          price: "$50.000 CLP",
+        },
+      ];
+
+      // 2. Serializar los datos a JSON string
+      const servicesJsonString = JSON.stringify(servicesData);
+
+      // 3. Seleccionar el contenedor principal de la demo
+      const container = document.querySelector(".library-preview-services");
+
+      // 4. Inyectar todos los componentes con datos
+      container.innerHTML = `
+            <anami-service-card-grid id="service-grid" services-json='${servicesJsonString}'></anami-service-card-grid>
+        `;
+      document
+        .getElementById("service-grid")
+        .addEventListener("service-selected", (event) => {
+          const selectedService = event.detail;
+          console.log("Servicio seleccionado:", selectedService);
+        });
+    </script>
+    <div class="component-label">Servicios GRID</div>
+    <div class="library-preview-services" id="servicios"></div>
+
+    <div class="component-label">Sección Hotel Tierra del Sur</div>
+    <anami-simple-section
+      id="hotel"
+      title="Servicios"
+      description="Complementa tu experiencia de relajación en el Hotel Tierra del Sur con un masaje express. Elige entre sesiones de 20 o 40 minutos para aliviar tensiones, relajar tu cuerpo y revitalizar tu energía. El equilibrio perfecto después de un sauna o baño turco."
+      image-url="https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+      features-json='[
+        {"icon": "renovacion", "label": "Renovación"},
+        {"icon": "alivio", "label": "Alivio"},
+        {"icon": "vitalidad", "label": "Vitalidad"}
+      ]'
+    ></anami-simple-section>
+
+    <div class="component-label">Seccion de Contacto</div>
+    <anami-contact-section
+      id="contacto"
+      phone="+56 9 8765 4321"
+      email="reservas@anamimasoterapia.cl"
+      instagram="@anami_masoterapia"
+      address="Calle Los Aromos 456, Centro, Temuco"
+    ></anami-contact-section>
+
+    <anami-footer
+      text="© 2025 Anami Masoterapia. Temuco, Chile."
+    ></anami-footer>
+    <anami-whatsapp phone="56912345678"></anami-whatsapp>
+    <!-- </div> -->
+  </body>
+</html>
