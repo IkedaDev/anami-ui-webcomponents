@@ -10,7 +10,7 @@ jobs:
     name: Publicar Librería
     runs-on: ubuntu-latest
 
-    # Permisos necesarios para interactuar con el repositorio
+    # Permisos OBLIGATORIOS para Trusted Publishers
     permissions:
       contents: write
       issues: write
@@ -26,14 +26,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20.x"
-          registry-url: "https://registry.npmjs.org" # Forzamos el registro oficial
+          # IMPORTANTE: Eliminamos 'registry-url' para evitar conflictos con .npmrc
+          # La autenticación la manejará semantic-release internamente.
+
+      - name: Actualizar NPM
+        run: npm install -g npm@latest
 
       - name: Instalar dependencias
         run: npm install
-
-      # Paso opcional de build si tuvieras (no necesario aquí, pero buena práctica dejar el hueco)
-      # - name: Build
-      #   run: npm run build
 
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v4
@@ -45,4 +45,5 @@ jobs:
             @semantic-release/npm
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # Esto usará tu nuevo token granular
+          # 🟢 ELIMINADO: NPM_TOKEN
+          # Al quitarlo, semantic-release usará la autenticación OIDC (Trusted Publishers)
