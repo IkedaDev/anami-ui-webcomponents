@@ -1,6 +1,5 @@
 name: Publicar en NPM
 
-# El flujo se activa con cualquier push a la rama principal (main).
 on:
   push:
     branches:
@@ -11,43 +10,32 @@ jobs:
     name: Publicar Librería
     runs-on: ubuntu-latest
 
-    # 💥 PERMISOS PARA TRUSTED PUBLISHERS (OIDC)
+    # Permisos necesarios para interactuar con el repositorio
     permissions:
-      contents: write # Para commitear cambios (package.json, changelog)
-      issues: write # Para comentar en issues/PRs
-      id-token: write # OBLIGATORIO: Permite la autenticación segura con NPM sin tokens
+      contents: write
+      issues: write
+      id-token: write
 
     steps:
-      # 1. Checkout del código
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # 2. Configurar Node.js
-      # NOTA: Quitamos 'registry-url' para evitar que setup-node cree un .npmrc
-      # conflictivo que espere un token tradicional.
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20.x"
+          registry-url: "https://registry.npmjs.org" # Forzamos el registro oficial
 
-      # 2.5. Actualizar NPM (Recomendado para soporte OIDC/Provenance)
-      - name: Update npm
-        run: npm install -g npm@latest
-
-      # 3. Instalación de dependencias
       - name: Instalar dependencias
         run: npm install
 
-      # 4. Configurar la cuenta de Git
-      - name: Configurar Git para la nueva versión
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+      # Paso opcional de build si tuvieras (no necesario aquí, pero buena práctica dejar el hueco)
+      # - name: Build
+      #   run: npm run build
 
-      # 5. Semantic Release
-      - name: Determinar nueva versión, crear Release y publicar
+      - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v4
         with:
           extra_plugins: |
@@ -57,5 +45,4 @@ jobs:
             @semantic-release/npm
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Con Trusted Publishers y provenance: true en package.json,
-          # NPM_TOKEN no es necesario.
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # Esto usará tu nuevo token granular
