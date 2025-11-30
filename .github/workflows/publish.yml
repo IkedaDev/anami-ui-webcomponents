@@ -11,17 +11,17 @@ jobs:
     name: Publicar Librería
     runs-on: ubuntu-latest
 
-    # 💥 CORRECCIÓN CRUCIAL: Añadimos permisos de escritura al job
+    # 💥 CORRECCIÓN CRUCIAL PARA TRUSTED PUBLISHERS
     permissions:
-      contents: write # Necesario para que semantic-release pueda commitear y taggear
-      issues: write # Necesario para el plugin @semantic-release/github
+      contents: write # Para que semantic-release pueda commitear y taggear
+      issues: write # Para comentar en issues/PRs
+      id-token: write # OBLIGATORIO: Permite la autenticación OIDC con NPM
 
     steps:
       # 1. Checkout del código
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          # Es crucial obtener el historial completo para que la herramienta de versión pueda analizar commits
           fetch-depth: 0
 
       # 2. Configurar Node.js y el registro NPM
@@ -31,37 +31,30 @@ jobs:
           node-version: "20.x"
           registry-url: "https://registry.npmjs.org"
 
-      # 2.5. DIAGNÓSTICO: Verificar la existencia del NPM_TOKEN (¡NO se imprime el valor!)
-      # - name: Verificar disponibilidad del NPM_TOKEN
-      #   run: |
-      #     if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
-      #       echo "::error::NPM_TOKEN no está configurado en GitHub Secrets. Publicación fallida."
-      #       exit 1
-      #     else
-      #       echo "NPM_TOKEN está disponible en secrets."
-      #     fi
-
+      # 2.5. Actualizar NPM (Recomendado para soporte OIDC/Provenance)
       - name: Update npm
         run: npm install -g npm@latest
 
-      # 3. Instalación de dependencias (necesaria para ejecutar cualquier script)
+      # 3. Instalación de dependencias
       - name: Instalar dependencias
         run: npm install
 
-      # 4. Configurar la cuenta de Git (necesario para que npm version funcione)
+      # 4. Configurar la cuenta de Git
       - name: Configurar Git para la nueva versión
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      # 5. Semantic Release (Herramienta para calcular la versión, crear la Release y publicar)
+      # 5. Semantic Release
       - name: Determinar nueva versión, crear Release y publicar
         uses: cycjimmy/semantic-release-action@v4
         with:
           extra_plugins: |
             @semantic-release/changelog
             @semantic-release/git
-            @semantic-release/github
+            @semantic-release/github 
+            @semantic-release/npm
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # NOTA: Con Trusted Publishers, NO necesitamos NPM_TOKEN aquí.
+          # La autenticación se maneja automáticamente gracias a 'id-token: write'.
