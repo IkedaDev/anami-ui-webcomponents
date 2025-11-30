@@ -42,7 +42,7 @@ jobs:
       #     fi
 
       - name: Update npm
-          run: npm install -g npm@latest
+        run: npm install -g npm@latest
 
       # 3. Instalación de dependencias (necesaria para ejecutar cualquier script)
       - name: Instalar dependencias
