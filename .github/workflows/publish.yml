@@ -1,0 +1,54 @@
+name: Publicar en NPM
+
+# El flujo se activa con cualquier push a la rama principal (main).
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publicar:
+    name: Publicar Librería
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout del código
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          # Es crucial obtener el historial completo para que la herramienta de versión pueda analizar commits
+          fetch-depth: 0
+
+      # 2. Configurar Node.js y el registro NPM
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          registry-url: "https://registry.npmjs.org"
+
+      # 3. Instalación de dependencias (necesaria para ejecutar cualquier script)
+      - name: Instalar dependencias
+        run: npm install
+
+      # 4. Configurar la cuenta de Git (necesario para que npm version funcione)
+      - name: Configurar Git para la nueva versión
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # 5. Semantic Release (Herramienta para calcular la versión, crear la Release y publicar)
+      - name: Determinar nueva versión, crear Release y publicar
+        uses: cycjimmy/semantic-release-action@v4
+        with:
+          # Se han agregado dos plugins:
+          # - @semantic-release/github: Crea la release en la pestaña de GitHub.
+          # - @semantic-release/git: Asegura que el package.json actualizado sea commiteado.
+          extra_plugins: |
+            @semantic-release/changelog
+            @semantic-release/git
+            @semantic-release/github # <--- ESTE PLUGIN CREA LA RELEASE EN GITHUB
+        env:
+          # GITHUB_TOKEN es proporcionado automáticamente por GitHub para crear la Release
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # NPM_TOKEN es necesario para la publicación en el registro de NPM
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
