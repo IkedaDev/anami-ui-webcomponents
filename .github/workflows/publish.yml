@@ -10,7 +10,9 @@ jobs:
   publicar:
     name: Publicar Librería
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write # Necesario para que semantic-release pueda commitear y taggear
+      issues: write # Necesario para el plugin @semantic-release/github
     steps:
       # 1. Checkout del código
       - name: Checkout Repository
