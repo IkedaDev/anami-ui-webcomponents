@@ -32,14 +32,17 @@ jobs:
           registry-url: "https://registry.npmjs.org"
 
       # 2.5. DIAGNÓSTICO: Verificar la existencia del NPM_TOKEN (¡NO se imprime el valor!)
-      - name: Verificar disponibilidad del NPM_TOKEN
-        run: |
-          if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
-            echo "::error::NPM_TOKEN no está configurado en GitHub Secrets. Publicación fallida."
-            exit 1
-          else
-            echo "NPM_TOKEN está disponible en secrets."
-          fi
+      # - name: Verificar disponibilidad del NPM_TOKEN
+      #   run: |
+      #     if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
+      #       echo "::error::NPM_TOKEN no está configurado en GitHub Secrets. Publicación fallida."
+      #       exit 1
+      #     else
+      #       echo "NPM_TOKEN está disponible en secrets."
+      #     fi
+
+      - name: Update npm
+          run: npm install -g npm@latest
 
       # 3. Instalación de dependencias (necesaria para ejecutar cualquier script)
       - name: Instalar dependencias
