@@ -10,9 +10,12 @@ jobs:
   publicar:
     name: Publicar Librería
     runs-on: ubuntu-latest
+
+    # 💥 CORRECCIÓN CRUCIAL: Añadimos permisos de escritura al job
     permissions:
       contents: write # Necesario para que semantic-release pueda commitear y taggear
       issues: write # Necesario para el plugin @semantic-release/github
+
     steps:
       # 1. Checkout del código
       - name: Checkout Repository
@@ -28,6 +31,16 @@ jobs:
           node-version: "20.x"
           registry-url: "https://registry.npmjs.org"
 
+      # 2.5. DIAGNÓSTICO: Verificar la existencia del NPM_TOKEN (¡NO se imprime el valor!)
+      - name: Verificar disponibilidad del NPM_TOKEN
+        run: |
+          if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
+            echo "::error::NPM_TOKEN no está configurado en GitHub Secrets. Publicación fallida."
+            exit 1
+          else
+            echo "NPM_TOKEN está disponible en secrets."
+          fi
+
       # 3. Instalación de dependencias (necesaria para ejecutar cualquier script)
       - name: Instalar dependencias
         run: npm install
@@ -42,15 +55,10 @@ jobs:
       - name: Determinar nueva versión, crear Release y publicar
         uses: cycjimmy/semantic-release-action@v4
         with:
-          # Se han agregado dos plugins:
-          # - @semantic-release/github: Crea la release en la pestaña de GitHub.
-          # - @semantic-release/git: Asegura que el package.json actualizado sea commiteado.
           extra_plugins: |
             @semantic-release/changelog
             @semantic-release/git
-            @semantic-release/github # <--- ESTE PLUGIN CREA LA RELEASE EN GITHUB
+            @semantic-release/github
         env:
-          # GITHUB_TOKEN es proporcionado automáticamente por GitHub para crear la Release
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # NPM_TOKEN es necesario para la publicación en el registro de NPM
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
