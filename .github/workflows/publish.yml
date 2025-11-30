@@ -26,8 +26,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20.x"
-          # IMPORTANTE: Eliminamos 'registry-url' para evitar conflictos con .npmrc
-          # La autenticación la manejará semantic-release internamente.
 
       - name: Actualizar NPM
         run: npm install -g npm@latest
@@ -35,33 +33,45 @@ jobs:
       - name: Instalar dependencias
         run: npm install
 
-      # PASO NUEVO: Crear archivo de configuración para Semantic Release
-      # Esto es necesario para decirle al plugin de NPM que NO verifique el token al inicio (verifyConditions: false)
-      # ya que usaremos OIDC (Trusted Publishers) que se autentica justo al momento de publicar.
-      - name: Crear configuración .releaserc
+      # 💥 PASO CLAVE: Inyectar configuración en package.json
+      # Usamos un script de Node para asegurar que el JSON sea válido y se aplique correctamente.
+      # Esto configura 'verifyConditions: false' para evitar el error ENONPMTOKEN
+      # y asegura 'provenance: true' para que funcione Trusted Publishers.
+      - name: Configurar package.json para Release
         run: |
-          cat <<EOF > .releaserc.json
-          {
-            "branches": ["main"],
-            "plugins": [
-              "@semantic-release/commit-analyzer",
-              "@semantic-release/release-notes-generator",
-              "@semantic-release/github",
-              ["@semantic-release/npm", {
-                "npmPublish": true,
-                "verifyConditions": false
-              }],
-              "@semantic-release/git"
-            ]
-          }
-          EOF
+          node -e '
+            const fs = require("fs");
+            const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
+            
+            // 1. Asegurar Provenance (OIDC)
+            pkg.publishConfig = { ...pkg.publishConfig, access: "public", provenance: true };
+            
+            // 2. Configurar Semantic Release para saltar verificación de token
+            pkg.release = {
+              branches: ["main"],
+              plugins: [
+                "@semantic-release/commit-analyzer",
+                "@semantic-release/release-notes-generator",
+                "@semantic-release/github",
+                ["@semantic-release/npm", { "verifyConditions": false }],
+                "@semantic-release/git"
+              ]
+            };
+            
+            fs.writeFileSync("package.json", JSON.stringify(pkg, null, 2));
+            console.log("package.json actualizado con configuración de release.");
+          '
 
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v4
         with:
-          # 💥 CORRECCIÓN: Usamos la versión 24 (moderna) que soporta OIDC
           semantic_version: 24
+          # Aseguramos que los plugins necesarios estén instalados en el entorno
+          extra_plugins: |
+            @semantic-release/changelog
+            @semantic-release/git
+            @semantic-release/github 
+            @semantic-release/npm
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # 🟢 ELIMINADO: NPM_TOKEN
-          # Al quitarlo, semantic-release usará la autenticación OIDC (Trusted Publishers)
+          # NPM_TOKEN eliminado para usar Trusted Publishers
