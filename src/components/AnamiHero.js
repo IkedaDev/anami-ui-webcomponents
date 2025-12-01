@@ -2,7 +2,7 @@ import { AnamiElement } from "../utils/AnamiElement.js";
 
 export class AnamiHero extends AnamiElement {
   static get observedAttributes() {
-    return ["title", "subtitle", "image-url"];
+    return ["title", "subtitle", "image-url", "link-href", "link-text"];
   }
   constructor() {
     super();
@@ -14,6 +14,9 @@ export class AnamiHero extends AnamiElement {
     const title = this.getAttribute("title");
     const subtitle = this.getAttribute("subtitle");
     const img = this.getAttribute("image-url");
+    const linkHref = this.getAttribute("link-href") || "#servicios";
+    const linkText = this.getAttribute("link-text") || "Conoce más";
+
     this.shadowRoot.innerHTML = `
                     ${this.getStyles()}
                     <style>
@@ -105,7 +108,7 @@ export class AnamiHero extends AnamiElement {
                         <div class="content">
                             <h1><span>Natural</span>${title}</h1>
                             <p>${subtitle}</p>
-                            <a href="#" class="btn">Conoce más</a>
+                            <a href="${linkHref}" class="btn">${linkText}</a>
                         </div>
                         <div class="image-wrapper">
                             <img src="${img}" alt="Hero">
