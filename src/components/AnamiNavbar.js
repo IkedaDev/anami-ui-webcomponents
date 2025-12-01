@@ -59,9 +59,9 @@ export class AnamiNavbar extends AnamiElement {
                     z-index: 100;
                     transition: all 0.3s ease;
                     border-bottom: 1px solid var(--anami-brand-secondary, #E8D3CD); /* Línea sutil */
+                    background: rgba(255, 252, 250, 0.95); /* Menos opaco para el blur */
                 }
                 nav {
-                    background: rgba(255, 252, 250, 0.95); /* Menos opaco para el blur */
                     backdrop-filter: blur(8px);
                     display: flex;
                     justify-content: space-between;
