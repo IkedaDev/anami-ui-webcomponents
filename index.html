@@ -55,17 +55,37 @@
         background: #e0e0e0;
         margin: 10px auto 0;
       }
+      .blog-section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .blog-grid {
+        display: grid;
+        padding: 4rem 2rem;
+        /* Tarjetas más anchas (350px min) para estilo editorial */
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 3rem; /* Espaciado generoso */
+        margin: 0 auto; /* Centrado horizontal */
+      }
+
+      @media (max-width: 768px) {
+        .blog-grid {
+          grid-template-columns: 1fr; /* Una columna en móvil */
+          gap: 2rem;
+        }
+      }
     </style>
   </head>
   <body>
     <!-- <div class="library-preview"> -->
-    <!-- <div class="component-label">Navegación</div> -->
+    <div class="component-label">Navegación</div>
     <anami-navbar
       logo="Anami Masoterapia"
       links='[{"text": "Inicio", "href": "#"}, {"text": "Servicios", "href": "#servicios"}, {"text": "Hotel", "href": "#hotel"}, {"text": "Contacto", "href": "#contacto"}]'
     ></anami-navbar>
 
-    <!-- <div class="component-label">Hero Section (Estilo Editorial)</div> -->
+    <div class="component-label">Hero Section (Estilo Editorial)</div>
     <anami-hero
       id="inicio"
       title="Bienestar y equilibrio"
@@ -73,7 +93,7 @@
       image-url="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
     ></anami-hero>
 
-    <!-- <div class="component-label">Bio Section (Orgánico)</div> -->
+    <div class="component-label">Bio Section (Orgánico)</div>
     <anami-bio
       name="Hola, soy Anette"
       subtitle="Masoterapeuta Certificada"
@@ -81,7 +101,7 @@
       image-url="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
     ></anami-bio>
 
-    <!-- <div class="component-label">Call to Action (Minimalista)</div> -->
+    <div class="component-label">Call to Action (Minimalista)</div>
     <anami-cta-card
       id="reserva-wsp"
       title="Reserva tu momento"
@@ -148,10 +168,10 @@
           console.log("Servicio seleccionado:", selectedService);
         });
     </script>
-    <!-- <div class="component-label">Servicios GRID</div> -->
+    <div class="component-label">Servicios GRID</div>
     <div class="library-preview-services" id="servicios"></div>
 
-    <!-- <div class="component-label">Sección Hotel Tierra del Sur</div> -->
+    <div class="component-label">Sección Hotel Tierra del Sur</div>
     <anami-simple-section
       id="hotel"
       title="Servicios"
@@ -164,7 +184,7 @@
       ]'
     ></anami-simple-section>
 
-    <!-- <div class="component-label">Seccion de Contacto</div> -->
+    <div class="component-label">Seccion de Contacto</div>
     <anami-contact-section
       id="contacto"
       phone="+56 9 8765 4321"
@@ -172,6 +192,39 @@
       instagram="@anami_masoterapia"
       address="Calle Los Aromos 456, Centro, Temuco"
     ></anami-contact-section>
+
+    <div class="component-label">Sistema de blog</div>
+    <div class="blog-grid">
+      <!-- Artículo 1 -->
+      <anami-blog-card
+        title="Beneficios del Masaje Descontracturante"
+        excerpt="Descubre cómo esta técnica puede aliviar dolores crónicos y mejorar tu postura diaria en solo unas sesiones."
+        category="Bienestar"
+        date="12 Oct, 2023"
+        image="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+        href="#"
+      ></anami-blog-card>
+
+      <!-- Artículo 2 -->
+      <anami-blog-card
+        title="Aromaterapia: Más que un olor agradable"
+        excerpt="Exploramos cómo los aceites esenciales impactan directamente en tu sistema nervioso para reducir el estrés."
+        category="Salud"
+        date="05 Nov, 2023"
+        image="https://images.unsplash.com/photo-1515377905703-c4788e51af15?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+        href="#"
+      ></anami-blog-card>
+
+      <!-- Artículo 3 -->
+      <anami-blog-card
+        title="La importancia de la hidratación post-masaje"
+        excerpt="¿Sabías que beber agua después de un masaje es clave para eliminar toxinas? Te explicamos por qué."
+        category="Tips"
+        date="20 Nov, 2023"
+        image="https://images.unsplash.com/photo-1548839140-29a749e1cf4d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+        href="#"
+      ></anami-blog-card>
+    </div>
 
     <anami-footer
       text="© 2025 Anami Masoterapia. Temuco, Chile."

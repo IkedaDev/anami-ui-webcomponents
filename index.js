@@ -8,3 +8,4 @@ import "./src/components/AnamiWhatsapp.js";
 import "./src/components/AnamiServiceCardGrid.js";
 import "./src/components/AnamiContactSection.js";
 import "./src/components/AnamiSimpleSection.js";
+import "./src/components/AnamiBlogCard.js";
