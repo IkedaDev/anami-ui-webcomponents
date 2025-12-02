@@ -1,6 +1,6 @@
 {
   "name": "@ikedadev/anami-ui",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Componentes de diseño para Anami Masoterapia",
   "main": "index.js",
   "type": "module",
