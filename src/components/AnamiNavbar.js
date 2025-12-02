@@ -70,6 +70,9 @@ export class AnamiNavbar extends AnamiElement {
                     max-width: 1300px;
                     margin: 0 auto;
                 }
+                nav h1 {
+                  margin: 0;
+                }
                 .logo {
                     font-size: 1.4rem;
                     font-weight: 500;
@@ -157,7 +160,9 @@ export class AnamiNavbar extends AnamiElement {
                 }
             </style>
             <nav>
-                <a href="#" class="logo">${logo}</a>
+                <h1>
+                  <a href="#" class="logo">${logo}</a>
+                </h1>
                 <div class="${menuClass}">
                     ${links
                       .map((link) => `<a href="${link.href}">${link.text}</a>`)
